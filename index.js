@@ -18,48 +18,55 @@
 
 //* Events
 
-const EventEmitter = require("events");
+// const EventEmitter = require("events");
 
-const emitter = new EventEmitter();
-let a = 1;
+// const emitter = new EventEmitter();
+// let a = 1;
 
-emitter.on("message", (a) => {
-  if (a === 10) {
-    console.log("Exiting!!");
-    process.exit();
-  } else {
-    console.log("Message " + a);
-  }
-});
+// emitter.on("message", (a) => {
+//   if (a === 10) {
+//     console.log("Exiting!!");
+//     process.exit();
+//   } else {
+//     console.log("Message " + a);
+//   }
+// });
 
-setInterval(() => {
-  emitter.emit("message", a++);
-}, 1000);
+// setInterval(() => {
+//   emitter.emit("message", a++);
+// }, 1000);
 
 //* Process
 // Boiler Plate code of OJ
 
-// function runProgram(input) {
-//   input = input.trim().split("\n");
-//   console.log(input);
-// }
+function runProgram(input) {
+  input = input.trim().split("\n");
+  console.log(input);
+}
 
-// process.stdin.resume();
-// process.stdin.setEncoding("ascii");
+//In "old" streams mode the stdin stream is paused by default, so one must call process.stdin.resume()
+process.stdin.resume();
 
-// let read = "";
-// process.stdin.on("data", function (input) {
-//   read += input;
-//   console.log(read);
-// });
+//Setting the type of encoding
+process.stdin.setEncoding("ascii");
 
-// process.stdin.on("end", function () {
-//   read = read.replace(/\n$/, "");
-//   runProgram(read);
-// });
+let read = "";
 
-// process.on("SIGINT", function () {
-//   read = read.replace(/\n$/, "");
-//   runProgram(read);
-//   process.exit(0);
-// });
+//  listening to input by subscribing to ‘data’ event on standard input.
+process.stdin.on("data", function (input) {
+  read += input;
+  console.log(read);
+});
+
+// to capture the end event
+process.stdin.on("end", function () {
+  read = read.replace(/\n$/, "");
+  runProgram(read);
+});
+
+//to catch any signal interupts
+process.on("SIGINT", function () {
+  read = read.replace(/\n$/, "");
+  runProgram(read);
+  process.exit(0);
+});
